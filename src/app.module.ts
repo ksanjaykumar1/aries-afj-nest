@@ -5,6 +5,7 @@ import { AriesModule } from './aries/aries.module';
 import { ConfigModule } from '@nestjs/config';
 import { configValidationSchema } from './config.schema';
 import { AriesService } from './aries/aries.service';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { AriesService } from './aries/aries.service';
       validationSchema: configValidationSchema,
     }),
     AriesModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
