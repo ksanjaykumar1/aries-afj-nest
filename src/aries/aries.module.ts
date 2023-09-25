@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AriesService } from './aries.service';
 import { ConfigModule } from '@nestjs/config';
 import { configValidationSchema } from 'src/config.schema';
+import { PrismaModule } from 'src/prisma/prisma.module';
 
 @Module({
   imports: [
@@ -9,6 +10,7 @@ import { configValidationSchema } from 'src/config.schema';
       envFilePath: [`.env.stage.dev`],
       validationSchema: configValidationSchema,
     }),
+    PrismaModule,
   ],
   providers: [AriesService],
   exports: [AriesService],

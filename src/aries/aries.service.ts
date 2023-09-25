@@ -36,6 +36,7 @@ import {
 import { ledgers } from './config';
 import { AnonCredsRsModule } from '@aries-framework/anoncreds-rs';
 import { anoncreds } from '@hyperledger/anoncreds-nodejs';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AriesService {
@@ -43,7 +44,10 @@ export class AriesService {
   issuerDid: string;
   provision: boolean;
   publicDidSeed: string;
-  constructor(private configService: ConfigService) {
+  constructor(
+    private configService: ConfigService,
+    private prismaService: PrismaService,
+  ) {
     // Initializing wallet
 
     // Importing ENV variables
@@ -171,7 +175,24 @@ export class AriesService {
           }`,
         );
       }
-      // write code to store the values in prisma
+      const { schemaId, schema } = schemaState;
+      const {
+        name: nameRes,
+        version: versionRes,
+        attrNames,
+        issuerId,
+      } = schema;
+
+      // schema stored in prisma
+      await this.prismaService.schema.create({
+        data: {
+          schemaId,
+          name: nameRes,
+          version: versionRes,
+          attrNames,
+          issuerId,
+        },
+      });
 
       return schemaState.schemaId;
     } catch (error) {
@@ -200,8 +221,27 @@ export class AriesService {
           }}`,
         );
       }
-
-      // return credentialDefinitionState;
+      console.log(credentialDefinitionState);
+      const { credentialDefinitionId, credentialDefinition } =
+        credentialDefinitionState;
+      const {
+        schemaId: schemaIdRes,
+        type,
+        tag,
+        value,
+        issuerId,
+      } = credentialDefinition;
+      console.log(value);
+      await this.prismaService.credentialDefination.create({
+        data: {
+          credentialDefinitionId,
+          schemaId: schemaIdRes,
+          tag,
+          type,
+          issuerId,
+        },
+      });
+      return credentialDefinitionId;
     } catch (error) {
       console.log(error);
     }

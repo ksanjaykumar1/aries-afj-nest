@@ -11,6 +11,22 @@ datasource db {
 }
 
 model Schema {
-  schemaId Int @id 
-  name String
+  // id Int @id @default(autoincrement())
+  schemaId String @id @unique
+  name String 
+  version String
+  attrNames String[]
+  issuerId String
+  credentialDefinitions CredentialDefination[]
+}
+
+model CredentialDefination {
+  credentialDefinitionId String @id @unique
+  type String
+  tag String
+  schemaId String 
+  schema Schema @relation(fields: [schemaId], references: [schemaId])
+  issuerId String
+
+
 }
