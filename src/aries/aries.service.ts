@@ -122,6 +122,16 @@ export class AriesService {
     // todo add a condition which prevents agent to initialize again and again
   }
 
+  async createOutOfBandRecord() {
+    const outOfBandRecord = await this.agent.oob.createInvitation();
+    return {
+      invitationUrl: outOfBandRecord.outOfBandInvitation.toUrl({
+        domain: 'https://example.org',
+      }),
+      outOfBandRecord,
+    };
+  }
+
   private async importDID() {
     console.log(this.issuerDid);
     await this.agent.dids.import({

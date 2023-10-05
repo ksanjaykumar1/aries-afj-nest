@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import { configValidationSchema } from './config.schema';
 import { AriesService } from './aries/aries.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { ConnectionsModule } from './connections/connections.module';
+import { OutOfBandModule } from './out-of-band/out-of-band.module';
 
 @Module({
   imports: [
@@ -15,6 +17,8 @@ import { PrismaModule } from './prisma/prisma.module';
     }),
     AriesModule,
     PrismaModule,
+    ConnectionsModule,
+    OutOfBandModule,
   ],
   controllers: [AppController],
   providers: [AppService],
